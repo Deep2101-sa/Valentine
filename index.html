@@ -160,11 +160,6 @@ let attempts = 0;
 const yesBtn = document.getElementById("yesBtn");
 const music = document.getElementById("loveMusic");
 
-function openLetter() {
-    document.getElementById("msg").style.display = "block";
-}
-
-/* Button teasing */
 yesBtn.addEventListener("touchstart", handleAttempt);
 yesBtn.addEventListener("mouseover", handleAttempt);
 
@@ -173,52 +168,31 @@ function handleAttempt(e) {
 
     if (attempts < 3) {
         attempts++;
-        const x = Math.random() * 200 - 100;
-        const y = Math.random() * 120 - 60;
-        yesBtn.style.transform = `translate(${x}px, ${y}px)`;
+
+        // Get current position
+        const currentLeft = yesBtn.offsetLeft;
+        const currentTop = yesBtn.offsetTop;
+
+        // Move FAR from current position
+        const moveX = (Math.random() > 0.5 ? 1 : -1) * (180 + Math.random() * 200);
+        const moveY = (Math.random() > 0.5 ? 1 : -1) * (120 + Math.random() * 200);
+
+        yesBtn.style.position = "relative";
+        yesBtn.style.left = currentLeft + moveX + "px";
+        yesBtn.style.top = currentTop + moveY + "px";
     } else {
-        yesBtn.style.transform = "translateX(0)";
+        // Final state: button becomes clickable
+        yesBtn.style.left = "0px";
+        yesBtn.style.top = "0px";
         yesBtn.style.background = "#28a745";
         yesBtn.innerText = "YES 💖 (Tap me)";
+        yesBtn.style.cursor = "pointer";
+
         yesBtn.removeEventListener("touchstart", handleAttempt);
         yesBtn.removeEventListener("mouseover", handleAttempt);
+
         yesBtn.onclick = celebrate;
     }
-}
-
-function celebrate() {
-    music.volume = 0.8;
-    music.play();
-
-    document.getElementById("scene").style.display = "block";
-    yesBtn.style.display = "none";
-
-    const rose = document.getElementById("rose");
-    const girl = document.getElementById("girl");
-
-    // Transfer rose
-    rose.classList.add("transfer");
-
-    setTimeout(() => {
-        rose.style.display = "none";
-        girl.innerHTML = "👧🌹";
-    }, 1500);
-
-    rain("🌹");
-    rain("🍫");
-}
-
-/* Emoji rain */
-function rain(symbol) {
-    setInterval(() => {
-        const item = document.createElement("div");
-        item.className = "rain";
-        item.innerHTML = symbol;
-        item.style.left = Math.random() * 100 + "vw";
-        document.body.appendChild(item);
-
-        setTimeout(() => item.remove(), 5000);
-    }, 300);
 }
 </script>
 
