@@ -156,6 +156,19 @@ h1 {
         opacity: 0;
     }
 }
+    /* Rose transfer animation */
+.transfer {
+    animation: giveRose 1.5s ease-in-out forwards;
+}
+
+@keyframes giveRose {
+    0% {
+        transform: translateX(0) scale(1);
+    }
+    100% {
+        transform: translateX(90px) scale(1.2);
+    }
+}
 </style>
 </head>
 
@@ -180,8 +193,11 @@ h1 {
 
     <div class="scene" id="scene">
         <div class="characters">
-            <div class="boy">👦<span class="rose">🌹</span></div>
-            <div>👧</div>
+    <div class="boy">
+        👦
+        <span class="rose" id="rose">🌹</span>
+    </div>
+    <div class="girl" id="girl">👧</div>
         </div>
         <p style="color:#e6005c;font-weight:bold;">
             Sayan is proposing Debu with a rose 🌹
@@ -229,15 +245,29 @@ function handleAttempt(e) {
     }
 }
 
+<script>
 function celebrate() {
+    music.volume = 0.8;
     music.play();
 
     document.getElementById("scene").style.display = "block";
     yesBtn.style.display = "none";
 
+    const rose = document.getElementById("rose");
+    const girl = document.getElementById("girl");
+
+    // Move rose from Sayan to Debu
+    rose.classList.add("transfer");
+
+    setTimeout(() => {
+        rose.style.display = "none";
+        girl.innerHTML = "👧🌹";
+    }, 1500);
+
     rain("🌹");
     rain("🍫");
 }
+</script>
 
 function rain(symbol) {
     setInterval(() => {
