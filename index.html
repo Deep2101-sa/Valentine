@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine for Debu 💖</title>
 
+<!-- Cute romantic fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
 body {
     margin: 0;
-    font-family: 'Dreaming Outloud Pro' , sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb);
     min-height: 100vh;
     display: flex;
@@ -20,7 +23,7 @@ body {
 /* Main card */
 .container {
     text-align: center;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.92);
     padding: 30px 25px;
     border-radius: 25px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
@@ -30,6 +33,8 @@ body {
 
 h1 {
     color: #e60073;
+    font-family: 'Pacifico', cursive;
+    font-size: 2rem;
 }
 
 /* Envelope */
@@ -101,7 +106,6 @@ h1 {
 }
 
 @keyframes giveRose {
-    from { transform: translateX(0) scale(1); }
     to { transform: translateX(90px) scale(1.2); }
 }
 
@@ -130,13 +134,14 @@ h1 {
     <h1>Hey Debu 💓</h1>
 
     <div class="envelope" onclick="openLetter()">💌</div>
-    <p>Tap the letter</p>
+    <p>Tap the letter, my love 💕</p>
 
     <div class="message" id="msg">
         <p>
-            I LOVE YOU DEBU ❤️<br><br>
-            BE MY VALENTINE 💕<br>
-            FOR THE REST OF MY LIFE 💍
+            From the moment you came into my life,<br>
+            everything became warmer, brighter & sweeter 💖<br><br>
+            Debu, will you be my Valentine 💕<br>
+            today, tomorrow & forever? 💍
         </p>
         <button id="yesBtn">YES 💖</button>
     </div>
@@ -149,7 +154,7 @@ h1 {
             </div>
             <div class="girl" id="girl">👧</div>
         </div>
-        <p style="color:#e6005c;font-weight:bold;">
+        <p style="color:#e6005c;font-weight:500;">
             Sayan is proposing Debu with a rose 🌹
         </p>
     </div>
@@ -164,24 +169,24 @@ function openLetter() {
     document.getElementById("msg").style.display = "block";
 }
 
-/* Button teasing */
-yesBtn.addEventListener("touchstart", handleAttempt);
-yesBtn.addEventListener("mouseover", handleAttempt);
+/* Button teasing (mobile safe) */
+yesBtn.addEventListener("pointerdown", handleAttempt);
 
-function handleAttempt(e) {
-    e.preventDefault();
-
+function handleAttempt() {
     if (attempts < 3) {
         attempts++;
-        const x = Math.random() * 200 - 100;
-        const y = Math.random() * 120 - 60;
-        yesBtn.style.transform = `translate(${x}px, ${y}px)`;
+
+        const moveX = (Math.random() > 0.5 ? 1 : -1) * (200 + Math.random() * 200);
+        const moveY = (Math.random() > 0.5 ? 1 : -1) * (120 + Math.random() * 200);
+
+        yesBtn.style.left = yesBtn.offsetLeft + moveX + "px";
+        yesBtn.style.top  = yesBtn.offsetTop  + moveY + "px";
     } else {
-        yesBtn.style.transform = "translateX(0)";
+        yesBtn.removeEventListener("pointerdown", handleAttempt);
+        yesBtn.style.left = "0px";
+        yesBtn.style.top = "0px";
         yesBtn.style.background = "#28a745";
         yesBtn.innerText = "YES 💖 (Tap me)";
-        yesBtn.removeEventListener("touchstart", handleAttempt);
-        yesBtn.removeEventListener("mouseover", handleAttempt);
         yesBtn.onclick = celebrate;
     }
 }
@@ -196,7 +201,6 @@ function celebrate() {
     const rose = document.getElementById("rose");
     const girl = document.getElementById("girl");
 
-    // Transfer rose
     rose.classList.add("transfer");
 
     setTimeout(() => {
@@ -208,12 +212,11 @@ function celebrate() {
     rain("🍫");
 }
 
-/* Emoji rain */
 function rain(symbol) {
     setInterval(() => {
         const item = document.createElement("div");
         item.className = "rain";
-        item.innerHTML = symbol;
+        item.innerText = symbol;
         item.style.left = Math.random() * 100 + "vw";
         document.body.appendChild(item);
 
