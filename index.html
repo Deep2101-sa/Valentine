@@ -6,102 +6,155 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
 body {
     margin: 0;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #ffd1ff);
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    font-family: 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Soft glowing background hearts */
+body::before {
+    content: "💗 💕 💖 💞 💘";
+    position: fixed;
+    font-size: 3rem;
+    opacity: 0.08;
+    animation: floatBg 20s linear infinite;
+}
+
+@keyframes floatBg {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-120vh); }
 }
 
 .container {
-    background: white;
-    width: 340px;
-    padding: 25px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
     border-radius: 25px;
+    padding: 30px 25px;
     text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    z-index: 2;
-    position: relative;
+    width: 90%;
+    max-width: 360px;
+    box-shadow: 0 20px 40px rgba(255, 0, 100, 0.25);
+    animation: fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 h1 {
-    color: #ff2f6d;
+    font-family: 'Pacifico', cursive;
+    color: #e60073;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
 }
 
 .envelope {
-    font-size: 80px;
+    font-size: 3.5rem;
     cursor: pointer;
+    animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
 }
 
 .message {
     display: none;
-    margin-top: 15px;
+    margin-top: 20px;
+    animation: popUp 0.8s ease forwards;
+}
+
+@keyframes popUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .message p {
-    font-size: 20px;
-    color: #e6005c;
-    font-weight: bold;
+    color: #b30059;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    font-weight: 500;
 }
 
 #yesBtn {
     margin-top: 20px;
-    padding: 12px 30px;
-    font-size: 20px;
-    background: #ff3366;
-    color: white;
+    padding: 12px 28px;
     border: none;
     border-radius: 30px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    background: linear-gradient(45deg, #ff4d6d, #ff85a1);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(255, 77, 109, 0.45);
+    transition: all 0.3s ease;
 }
 
+#yesBtn:hover {
+    transform: scale(1.1);
+}
+
+/* Proposal scene */
 .scene {
     display: none;
-    margin-top: 20px;
+    margin-top: 25px;
+    animation: fadeIn 1s ease;
 }
 
 .characters {
-    font-size: 50px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 2.5rem;
 }
 
 .boy {
-    animation: propose 3s forwards;
+    animation: propose 1.5s infinite alternate;
 }
 
 @keyframes propose {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(60px); }
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-6px); }
 }
 
 .rose {
-    font-size: 30px;
-    animation: roseMove 2s infinite;
+    display: block;
+    font-size: 1.5rem;
+    animation: glow 1.2s infinite alternate;
 }
 
-@keyframes roseMove {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(10px); }
-    100% { transform: translateX(0); }
+@keyframes glow {
+    from { transform: scale(1); }
+    to { transform: scale(1.3); }
 }
 
+/* Rain items */
 .rain {
-    position: absolute;
-    font-size: 25px;
-    animation: fall 5s linear infinite;
+    position: fixed;
+    top: -10vh;
+    font-size: 2rem;
+    animation: fall 5s linear forwards;
 }
 
 @keyframes fall {
-    from { transform: translateY(-10vh); opacity: 1; }
-    to { transform: translateY(110vh); opacity: 0; }
+    to {
+        transform: translateY(110vh);
+        opacity: 0;
+    }
 }
 </style>
 </head>
