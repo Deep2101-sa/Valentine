@@ -17,10 +17,9 @@ body {
     overflow: hidden;
 }
 
-/* Main card */
 .container {
     text-align: center;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255,255,255,0.92);
     padding: 30px 25px;
     border-radius: 25px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
@@ -32,7 +31,6 @@ h1 {
     color: #e60073;
 }
 
-/* Envelope */
 .envelope {
     font-size: 4rem;
     cursor: pointer;
@@ -45,7 +43,6 @@ h1 {
     100% { transform: scale(1); }
 }
 
-/* Message */
 .message {
     display: none;
     margin-top: 20px;
@@ -57,7 +54,6 @@ h1 {
     line-height: 1.6;
 }
 
-/* YES button */
 #yesBtn {
     margin-top: 20px;
     padding: 12px 30px;
@@ -70,7 +66,6 @@ h1 {
     position: relative;
 }
 
-/* Scene */
 .scene {
     display: none;
     margin-top: 25px;
@@ -83,7 +78,6 @@ h1 {
     font-size: 3rem;
 }
 
-/* Rose */
 .rose {
     display: block;
     font-size: 1.5rem;
@@ -95,17 +89,14 @@ h1 {
     to { transform: scale(1.3); }
 }
 
-/* Rose transfer */
 .transfer {
     animation: giveRose 1.5s ease-in-out forwards;
 }
 
 @keyframes giveRose {
-    from { transform: translateX(0) scale(1); }
     to { transform: translateX(90px) scale(1.2); }
 }
 
-/* Falling emojis */
 .rain {
     position: fixed;
     top: -10vh;
@@ -114,10 +105,7 @@ h1 {
 }
 
 @keyframes fall {
-    to {
-        transform: translateY(110vh);
-        opacity: 0;
-    }
+    to { transform: translateY(110vh); opacity: 0; }
 }
 </style>
 </head>
@@ -130,23 +118,21 @@ h1 {
     <h1>Hey Debu 💓</h1>
 
     <div class="envelope" onclick="openLetter()">💌</div>
-    <p>Tap the letter</p>
+    <p>Tap the letter, my love 💕</p>
 
     <div class="message" id="msg">
         <p>
-            I LOVE YOU DEBU ❤️<br><br>
-            BE MY VALENTINE 💕<br>
-            FOR THE REST OF MY LIFE 💍
+            From the moment you came into my life,<br>
+            everything became warmer, brighter, sweeter 💖<br><br>
+            Debu… will you be my Valentine 💕<br>
+            today, tomorrow & forever? 💍
         </p>
         <button id="yesBtn">YES 💖</button>
     </div>
 
     <div class="scene" id="scene">
         <div class="characters">
-            <div class="boy">
-                👦
-                <span class="rose" id="rose">🌹</span>
-            </div>
+            <div class="boy">👦 <span class="rose" id="rose">🌹</span></div>
             <div class="girl" id="girl">👧</div>
         </div>
         <p style="color:#e6005c;font-weight:bold;">
@@ -160,39 +146,61 @@ let attempts = 0;
 const yesBtn = document.getElementById("yesBtn");
 const music = document.getElementById("loveMusic");
 
-yesBtn.addEventListener("touchstart", handleAttempt);
-yesBtn.addEventListener("mouseover", handleAttempt);
+function openLetter() {
+    document.getElementById("msg").style.display = "block";
+}
 
-function handleAttempt(e) {
-    e.preventDefault();
+yesBtn.addEventListener("pointerdown", handleAttempt);
 
+function handleAttempt() {
     if (attempts < 3) {
         attempts++;
 
-        // Get current position
-        const currentLeft = yesBtn.offsetLeft;
-        const currentTop = yesBtn.offsetTop;
-
-        // Move FAR from current position
-        const moveX = (Math.random() > 0.5 ? 1 : -1) * (180 + Math.random() * 200);
+        const moveX = (Math.random() > 0.5 ? 1 : -1) * (200 + Math.random() * 200);
         const moveY = (Math.random() > 0.5 ? 1 : -1) * (120 + Math.random() * 200);
 
-        yesBtn.style.position = "relative";
-        yesBtn.style.left = currentLeft + moveX + "px";
-        yesBtn.style.top = currentTop + moveY + "px";
+        yesBtn.style.left = (yesBtn.offsetLeft + moveX) + "px";
+        yesBtn.style.top  = (yesBtn.offsetTop  + moveY) + "px";
     } else {
-        // Final state: button becomes clickable
+        yesBtn.removeEventListener("pointerdown", handleAttempt);
         yesBtn.style.left = "0px";
         yesBtn.style.top = "0px";
         yesBtn.style.background = "#28a745";
         yesBtn.innerText = "YES 💖 (Tap me)";
-        yesBtn.style.cursor = "pointer";
-
-        yesBtn.removeEventListener("touchstart", handleAttempt);
-        yesBtn.removeEventListener("mouseover", handleAttempt);
-
         yesBtn.onclick = celebrate;
     }
+}
+
+function celebrate() {
+    music.volume = 0.8;
+    music.play();
+
+    document.getElementById("scene").style.display = "block";
+    yesBtn.style.display = "none";
+
+    const rose = document.getElementById("rose");
+    const girl = document.getElementById("girl");
+
+    rose.classList.add("transfer");
+
+    setTimeout(() => {
+        rose.style.display = "none";
+        girl.innerHTML = "👧🌹";
+    }, 1500);
+
+    rain("🌹");
+    rain("🍫");
+}
+
+function rain(symbol) {
+    setInterval(() => {
+        const item = document.createElement("div");
+        item.className = "rain";
+        item.innerText = symbol;
+        item.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(item);
+        setTimeout(() => item.remove(), 5000);
+    }, 250);
 }
 </script>
 
