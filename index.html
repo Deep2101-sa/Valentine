@@ -162,6 +162,9 @@ h1 {
 
 <script>
 let attempts = 0;
+let posX = 0;
+let posY = 0;
+
 const yesBtn = document.getElementById("yesBtn");
 const music = document.getElementById("loveMusic");
 
@@ -169,22 +172,30 @@ function openLetter() {
     document.getElementById("msg").style.display = "block";
 }
 
-/* Button teasing (mobile safe) */
 yesBtn.addEventListener("pointerdown", handleAttempt);
 
-function handleAttempt() {
+function handleAttempt(e) {
+    e.preventDefault();
+
     if (attempts < 3) {
         attempts++;
 
-        const moveX = (Math.random() > 0.5 ? 1 : -1) * (200 + Math.random() * 200);
-        const moveY = (Math.random() > 0.5 ? 1 : -1) * (120 + Math.random() * 200);
+        // Move FAR but controlled
+        const moveX = (Math.random() > 0.5 ? 1 : -1) * (120 + Math.random() * 120);
+        const moveY = (Math.random() > 0.5 ? 1 : -1) * (80 + Math.random() * 120);
 
-        yesBtn.style.left = yesBtn.offsetLeft + moveX + "px";
-        yesBtn.style.top  = yesBtn.offsetTop  + moveY + "px";
+        posX += moveX;
+        posY += moveY;
+
+        // Clamp movement so button stays visible
+        posX = Math.max(-150, Math.min(150, posX));
+        posY = Math.max(-120, Math.min(120, posY));
+
+        yesBtn.style.transform = `translate(${posX}px, ${posY}px)`;
     } else {
+        // Final calm state
         yesBtn.removeEventListener("pointerdown", handleAttempt);
-        yesBtn.style.left = "0px";
-        yesBtn.style.top = "0px";
+        yesBtn.style.transform = "translate(0, 0)";
         yesBtn.style.background = "#28a745";
         yesBtn.innerText = "YES 💖 (Tap me)";
         yesBtn.onclick = celebrate;
@@ -219,7 +230,6 @@ function rain(symbol) {
         item.innerText = symbol;
         item.style.left = Math.random() * 100 + "vw";
         document.body.appendChild(item);
-
         setTimeout(() => item.remove(), 5000);
     }, 300);
 }
