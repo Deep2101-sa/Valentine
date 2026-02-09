@@ -143,32 +143,45 @@ const music = document.getElementById("music");
 
 function openLetter() {
     document.getElementById("msg").style.display = "block";
-    moveButton();
+    yesBtn.style.display = "block";
 }
 
-function moveButton() {
-    yesBtn.addEventListener("touchstart", evade);
-    yesBtn.addEventListener("mouseover", evade);
-}
+// Handle touch / mouse
+yesBtn.addEventListener("touchstart", handleAttempt);
+yesBtn.addEventListener("mouseover", handleAttempt);
 
-function evade() {
+function handleAttempt(e) {
+    e.preventDefault();
+
     if (attempts < 3) {
         attempts++;
+
         const x = Math.random() * 200 - 100;
-        const y = Math.random() * 100;
+        const y = Math.random() * 120 - 60;
+
         yesBtn.style.transform = `translate(${x}px, ${y}px)`;
     } else {
-        yesBtn.removeEventListener("touchstart", evade);
-        yesBtn.removeEventListener("mouseover", evade);
+        // FINAL STATE: make it clickable
         yesBtn.style.transform = "translateX(-50%)";
+        yesBtn.style.background = "#28a745";
+        yesBtn.innerText = "YES 💖 (Tap me)";
+        yesBtn.style.cursor = "pointer";
+
+        // Remove dodge behavior
+        yesBtn.removeEventListener("touchstart", handleAttempt);
+        yesBtn.removeEventListener("mouseover", handleAttempt);
+
+        // Enable click
         yesBtn.onclick = celebrate;
     }
 }
 
 function celebrate() {
     music.play();
+
     document.getElementById("scene").style.display = "block";
     yesBtn.style.display = "none";
+
     rain("🌹");
     rain("🍫");
 }
@@ -180,10 +193,8 @@ function rain(symbol) {
         item.innerHTML = symbol;
         item.style.left = Math.random() * 100 + "vw";
         document.body.appendChild(item);
+
         setTimeout(() => item.remove(), 5000);
-    }, 300);
+    }, 250);
 }
 </script>
-
-</body>
-</html>
