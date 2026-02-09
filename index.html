@@ -6,128 +6,109 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-    body {
-        margin: 0;
-        height: 100vh;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #ff758c, #ff7eb3);
-        font-family: 'Segoe UI', sans-serif;
-    }
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    font-family: 'Segoe UI', sans-serif;
+}
 
-    .container {
-        background: white;
-        width: 340px;
-        padding: 25px;
-        border-radius: 25px;
-        text-align: center;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        z-index: 2;
-    }
+.container {
+    background: white;
+    width: 340px;
+    padding: 25px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    z-index: 2;
+    position: relative;
+}
 
-    h1 {
-        color: #ff2f6d;
-    }
+h1 {
+    color: #ff2f6d;
+}
 
-    .envelope {
-        font-size: 80px;
-        cursor: pointer;
-        transition: transform 0.4s;
-    }
+.envelope {
+    font-size: 80px;
+    cursor: pointer;
+}
 
-    .envelope:hover {
-        transform: scale(1.15);
-    }
+.message {
+    display: none;
+    margin-top: 15px;
+}
 
-    .message {
-        display: none;
-        margin-top: 15px;
-        animation: fadeIn 1.2s;
-    }
+.message p {
+    font-size: 20px;
+    color: #e6005c;
+    font-weight: bold;
+}
 
-    .message p {
-        font-size: 20px;
-        color: #e6005c;
-        font-weight: bold;
-    }
+#yesBtn {
+    margin-top: 20px;
+    padding: 12px 30px;
+    font-size: 20px;
+    background: #ff3366;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-    .yes-btn {
-        display: none;
-        margin: 20px auto;
-        padding: 12px 30px;
-        font-size: 20px;
-        background: #ff3366;
-        color: white;
-        border: none;
-        border-radius: 30px;
-        cursor: not-allowed;
-        position: relative;
-        animation: floatBtn 1.5s infinite;
-    }
+.scene {
+    display: none;
+    margin-top: 20px;
+}
 
-    @keyframes floatBtn {
-        0% { transform: translateX(0); }
-        50% { transform: translateX(40px); }
-        100% { transform: translateX(0); }
-    }
+.characters {
+    font-size: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+.boy {
+    animation: propose 3s forwards;
+}
 
-    .heart {
-        position: absolute;
-        color: rgba(255,255,255,0.8);
-        font-size: 20px;
-        animation: float 6s linear infinite;
-    }
+@keyframes propose {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(60px); }
+}
 
-    @keyframes float {
-        from { transform: translateY(100vh); opacity: 1; }
-        to { transform: translateY(-10vh); opacity: 0; }
-    }
+.rose {
+    font-size: 30px;
+    animation: roseMove 2s infinite;
+}
 
-    .scene {
-        display: none;
-        margin-top: 20px;
-    }
+@keyframes roseMove {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
 
-    .characters {
-        font-size: 50px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        animation: fadeIn 1.5s;
-    }
+.rain {
+    position: absolute;
+    font-size: 25px;
+    animation: fall 5s linear infinite;
+}
 
-    .rose {
-        font-size: 30px;
-        animation: giveRose 2s infinite;
-    }
-
-    @keyframes giveRose {
-        0% { transform: translateX(0); }
-        50% { transform: translateX(15px); }
-        100% { transform: translateX(0); }
-    }
-
-    .names {
-        display: flex;
-        justify-content: space-around;
-        font-weight: bold;
-        color: #ff3366;
-    }
+@keyframes fall {
+    from { transform: translateY(-10vh); opacity: 1; }
+    to { transform: translateY(110vh); opacity: 0; }
+}
 </style>
 </head>
 
 <body>
 
-<audio id="bgMusic" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-</audio>
+<audio id="music" src="music.mp3" loop></audio>
 
 <div class="container">
     <h1>Hey Debu 💓</h1>
@@ -135,70 +116,73 @@
     <div class="envelope" onclick="openLetter()">💌</div>
     <p>Tap the letter</p>
 
-    <div class="message" id="loveMessage">
+    <div class="message" id="msg">
         <p>
             I LOVE YOU DEBU ❤️<br><br>
             BE MY VALENTINE 💕<br>
             FOR THE REST OF MY LIFE 💍
         </p>
-        <button class="yes-btn" id="yesBtn">YES 💖</button>
+        <button id="yesBtn">YES 💖</button>
     </div>
 
     <div class="scene" id="scene">
         <div class="characters">
-            <div>👦<span class="rose">🌹</span></div>
+            <div class="boy">👦<span class="rose">🌹</span></div>
             <div>👧</div>
         </div>
-        <div class="names">
-            <div>Sayan</div>
-            <div>Debu</div>
-        </div>
-        <p style="color:#e6005c; font-weight:bold; margin-top:10px;">
-            Sayan is proposing Debu with a rose 🌹💍
+        <p style="color:#e6005c;font-weight:bold;">
+            Sayan is proposing Debu with a rose 🌹
         </p>
     </div>
 </div>
 
 <script>
-    let moveCount = 0;
-    const yesBtn = document.getElementById("yesBtn");
-    const music = document.getElementById("bgMusic");
+let attempts = 0;
+const yesBtn = document.getElementById("yesBtn");
+const music = document.getElementById("music");
 
-    function openLetter() {
-        document.getElementById("loveMessage").style.display = "block";
-        yesBtn.style.display = "block";
-        music.play().catch(()=>{});
-        moveYesButton();
+function openLetter() {
+    document.getElementById("msg").style.display = "block";
+    moveButton();
+}
+
+function moveButton() {
+    yesBtn.addEventListener("touchstart", evade);
+    yesBtn.addEventListener("mouseover", evade);
+}
+
+function evade() {
+    if (attempts < 3) {
+        attempts++;
+        const x = Math.random() * 200 - 100;
+        const y = Math.random() * 100;
+        yesBtn.style.transform = `translate(${x}px, ${y}px)`;
+    } else {
+        yesBtn.removeEventListener("touchstart", evade);
+        yesBtn.removeEventListener("mouseover", evade);
+        yesBtn.style.transform = "translateX(-50%)";
+        yesBtn.onclick = celebrate;
     }
+}
 
-    function moveYesButton() {
-        const interval = setInterval(() => {
-            moveCount++;
-            if (moveCount === 3) {
-                yesBtn.style.animation = "none";
-                yesBtn.style.cursor = "pointer";
-                yesBtn.onclick = showScene;
-                clearInterval(interval);
-            }
-        }, 1500);
-    }
+function celebrate() {
+    music.play();
+    document.getElementById("scene").style.display = "block";
+    yesBtn.style.display = "none";
+    rain("🌹");
+    rain("🍫");
+}
 
-    function showScene() {
-        document.getElementById("scene").style.display = "block";
-        yesBtn.style.display = "none";
-    }
-
-    // Floating hearts
+function rain(symbol) {
     setInterval(() => {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (15 + Math.random() * 20) + "px";
-        heart.style.animationDuration = (4 + Math.random() * 3) + "s";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 7000);
-    }, 400);
+        const item = document.createElement("div");
+        item.className = "rain";
+        item.innerHTML = symbol;
+        item.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(item);
+        setTimeout(() => item.remove(), 5000);
+    }, 300);
+}
 </script>
 
 </body>
