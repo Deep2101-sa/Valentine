@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine for Debu 💖</title>
 
-<!-- Cute romantic fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -20,7 +19,6 @@ body {
     overflow: hidden;
 }
 
-/* Main card */
 .container {
     text-align: center;
     background: rgba(255, 255, 255, 0.92);
@@ -29,6 +27,7 @@ body {
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
     max-width: 360px;
     width: 90%;
+    position: relative;
 }
 
 h1 {
@@ -37,7 +36,6 @@ h1 {
     font-size: 2rem;
 }
 
-/* Envelope */
 .envelope {
     font-size: 4rem;
     cursor: pointer;
@@ -50,7 +48,6 @@ h1 {
     100% { transform: scale(1); }
 }
 
-/* Message */
 .message {
     display: none;
     margin-top: 20px;
@@ -62,20 +59,31 @@ h1 {
     line-height: 1.6;
 }
 
-/* YES button */
-#yesBtn {
+.buttons {
     margin-top: 20px;
-    padding: 12px 30px;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 30px;
-    background: #ff4d88;
-    color: white;
-    cursor: pointer;
     position: relative;
 }
 
-/* Scene */
+button {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+#yesBtn {
+    background: #ff4d88;
+    color: white;
+}
+
+#noBtn {
+    background: #666;
+    color: white;
+    position: absolute;
+}
+
 .scene {
     display: none;
     margin-top: 25px;
@@ -88,7 +96,6 @@ h1 {
     font-size: 3rem;
 }
 
-/* Rose */
 .rose {
     display: block;
     font-size: 1.5rem;
@@ -100,7 +107,6 @@ h1 {
     to { transform: scale(1.3); }
 }
 
-/* Rose transfer */
 .transfer {
     animation: giveRose 1.5s ease-in-out forwards;
 }
@@ -109,7 +115,6 @@ h1 {
     to { transform: translateX(90px) scale(1.2); }
 }
 
-/* Falling emojis */
 .rain {
     position: fixed;
     top: -10vh;
@@ -143,7 +148,11 @@ h1 {
             Debu, will you be my Valentine 💕<br>
             today, tomorrow & forever? 💍
         </p>
-        <button id="yesBtn">YES 💖</button>
+
+        <div class="buttons">
+            <button id="yesBtn" onclick="celebrate()">YES 💖</button>
+            <button id="noBtn">NO 😜</button>
+        </div>
     </div>
 
     <div class="scene" id="scene">
@@ -161,53 +170,36 @@ h1 {
 </div>
 
 <script>
-let attempts = 0;
-let posX = 0;
-let posY = 0;
-
-const yesBtn = document.getElementById("yesBtn");
 const music = document.getElementById("loveMusic");
+const noBtn = document.getElementById("noBtn");
 
 function openLetter() {
     document.getElementById("msg").style.display = "block";
 }
 
-yesBtn.addEventListener("pointerdown", handleAttempt);
+/* NO button runs away */
+noBtn.addEventListener("mouseover", moveNoButton);
+noBtn.addEventListener("pointerdown", moveNoButton);
 
-function handleAttempt(e) {
-    e.preventDefault();
+function moveNoButton() {
+    const container = document.querySelector(".container");
+    const maxX = container.clientWidth - noBtn.offsetWidth - 20;
+    const maxY = 100;
 
-    if (attempts < 3) {
-        attempts++;
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
 
-        // Move FAR but controlled
-        const moveX = (Math.random() > 0.5 ? 1 : -1) * (120 + Math.random() * 120);
-        const moveY = (Math.random() > 0.5 ? 1 : -1) * (80 + Math.random() * 120);
-
-        posX += moveX;
-        posY += moveY;
-
-        // Clamp movement so button stays visible
-        posX = Math.max(-150, Math.min(150, posX));
-        posY = Math.max(-120, Math.min(120, posY));
-
-        yesBtn.style.transform = `translate(${posX}px, ${posY}px)`;
-    } else {
-        // Final calm state
-        yesBtn.removeEventListener("pointerdown", handleAttempt);
-        yesBtn.style.transform = "translate(0, 0)";
-        yesBtn.style.background = "#28a745";
-        yesBtn.innerText = "YES 💖 (Tap me)";
-        yesBtn.onclick = celebrate;
-    }
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
 }
 
+/* Celebration */
 function celebrate() {
     music.volume = 0.8;
     music.play();
 
     document.getElementById("scene").style.display = "block";
-    yesBtn.style.display = "none";
+    document.querySelector(".buttons").style.display = "none";
 
     const rose = document.getElementById("rose");
     const girl = document.getElementById("girl");
