@@ -39,10 +39,9 @@ body::before {
     width: 90%;
     position: relative;
     z-index: 2;
-    transition: background 1s ease, backdrop-filter 1s ease;
+    transition: background 1s ease;
 }
 
-/* Premium hover lift */
 .container:hover {
     transform: translateY(-5px);
 }
@@ -213,11 +212,11 @@ function moveNoButton() {
 /* Celebration */
 function celebrate() {
 
-    /* 🔥 NEW PART — change white box to your photo */
+    /* ✅ CLEAR PHOTO WITH CINEMATIC OVERLAY */
     const box = document.getElementById("mainBox");
-    box.style.background = "url('yourphoto.jpg') center/cover no-repeat";
-    box.style.backdropFilter = "blur(8px)";
-    box.style.backgroundColor = "rgba(255,255,255,0.2)";
+    box.style.background =
+        "linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('yourphoto.jpg') center/cover no-repeat";
+    box.style.backgroundColor = "transparent";
 
     music.volume = 0.8;
     music.play();
