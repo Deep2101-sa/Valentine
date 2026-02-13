@@ -30,10 +30,6 @@ body::before {
 }
 
 .container {
-    z-index: 1;
-}
-
-.container {
     text-align: center;
     background: rgba(255, 255, 255, 0.95);
     padding: 30px 25px;
@@ -43,8 +39,10 @@ body::before {
     width: 90%;
     position: relative;
     z-index: 2;
+    transition: background 1s ease, backdrop-filter 1s ease;
 }
-/* Slight hover lift (feels premium on mobile tap too) */
+
+/* Premium hover lift */
 .container:hover {
     transform: translateY(-5px);
 }
@@ -154,7 +152,7 @@ button {
 
 <audio id="loveMusic" src="gehra_hua.mp3"></audio>
 
-<div class="container">
+<div class="container" id="mainBox">
     <h1>Hey Debu 💓</h1>
 
     <div class="envelope" onclick="openLetter()">💌</div>
@@ -214,6 +212,13 @@ function moveNoButton() {
 
 /* Celebration */
 function celebrate() {
+
+    /* 🔥 NEW PART — change white box to your photo */
+    const box = document.getElementById("mainBox");
+    box.style.background = "url('yourphoto.jpg') center/cover no-repeat";
+    box.style.backdropFilter = "blur(8px)";
+    box.style.backgroundColor = "rgba(255,255,255,0.2)";
+
     music.volume = 0.8;
     music.play();
 
